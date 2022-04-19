@@ -43,10 +43,11 @@ Polynomial::Polynomial() {
 }
 
 Polynomial::Polynomial(const Polynomial &p) {
-    Term *p_ptr = p.head;
-    while (p_ptr != NULL) {
-        addTerm(p_ptr->exponent, p_ptr->coefficient);
-        p_ptr = p_ptr->next;
+    head = NULL;
+    Term *p1 = p.head;
+    while (p1 != NULL) {
+        addTerm(p1->exponent, p1->coefficient);
+        p1 = p1->next;
     }
 }
 
@@ -60,10 +61,11 @@ Polynomial::~Polynomial() {
 }
 
 Polynomial & Polynomial::operator = (const Polynomial &p) {
-    Term *p_ptr = p.head;
-    while (p_ptr != NULL) {
-        addTerm(p_ptr->exponent, p_ptr->coefficient);
-        p_ptr = p_ptr->next;
+    head = NULL;
+    Term *p1 = p.head;
+    while (p1 != NULL) {
+        addTerm(p1->exponent, p1->coefficient);
+        p1 = p1->next;
     }
     return *this;
 }
@@ -204,6 +206,14 @@ int main (){
         cout << "a * b = " << a * b << endl;
         cout << "//-------------------------//" << endl;
     }
+
+    cout << endl << "//-------------------------//" << endl << endl;
+
+    a = b;
+    cout << "a = b = " << a << endl;
+    
+    Polynomial c(b);
+    cout << "c = b = " << c << endl;
 
 
     return 0;
