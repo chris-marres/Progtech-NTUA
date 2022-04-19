@@ -1,6 +1,6 @@
 #include <iostream>
+#include <cmath>
 using namespace std;
-
 class Polynomial {
     protected:
         class Term {
@@ -71,6 +71,9 @@ Polynomial & Polynomial::operator = (const Polynomial &p) {
 void Polynomial::addTerm(int expon, int coeff) {
     Term *p_ptr = head;
     Term *prev = NULL;
+    if (coeff == 0) {
+        return;
+    }
     while (p_ptr != NULL && p_ptr->exponent > expon) {
         prev = p_ptr;
         p_ptr = p_ptr->next;
@@ -79,10 +82,12 @@ void Polynomial::addTerm(int expon, int coeff) {
         Term *temp = new Term(expon, coeff, p_ptr);
         if (prev == NULL) {
             head = temp;
-        } else {
+        }
+        else{
             prev->next = temp;
         }
-    } else {
+    }
+    else{
         p_ptr->coefficient += coeff;
     }
 }
@@ -147,17 +152,34 @@ ostream & operator << (ostream &out, const Polynomial &p) {
         out << "0";
     }
     else {
-        if (p_ptr != NULL) {
-            if (p_ptr->coefficient < 0) {
-                out << "- "<< abs(p_ptr->coefficient) << "x^" << p_ptr->exponent;
-            }
+        if (p_ptr->coefficient < 0) {
+            out << "- ";
         }
+        if ((p_ptr->coefficient != 1 && p_ptr->coefficient != -1) || p_ptr->exponent == 0) {
+            out << abs(p_ptr->coefficient);
+        }
+        if (p_ptr->exponent != 0) {
+            out << "x";
+        }
+        if (p_ptr->exponent != 1 && p_ptr->exponent != 0) {
+            out << "^" << p_ptr->exponent;
+        }
+        p_ptr = p_ptr->next;
         while (p_ptr != NULL) {
-            if (p_ptr->coefficient > 0) {
-                out << " + " << p_ptr->coefficient << "x^" << p_ptr->exponent;
+            if (p_ptr->coefficient < 0) {
+                out << " - ";
             }
-            else if (p_ptr->coefficient < 0) {    
-                out << " - " << abs(p_ptr->coefficient) << "x^" << p_ptr->exponent;
+            else {
+                out << " + ";
+            }
+            if ((p_ptr->coefficient != 1 && p_ptr->coefficient != -1) || p_ptr->exponent == 0) {
+                out << abs(p_ptr->coefficient);
+            }
+            if (p_ptr->exponent != 0) {
+                out << "x";
+            }
+            if (p_ptr->exponent != 1 && p_ptr->exponent != 0) {
+                out << "^" << p_ptr->exponent;
             }
             p_ptr = p_ptr->next;
         }
@@ -165,17 +187,24 @@ ostream & operator << (ostream &out, const Polynomial &p) {
     return out;
 }
 
-int main(){
-    Polynomial p;
-    p.addTerm(2, 3);
-    p.addTerm(1, 2);
-    p.addTerm(0, 1);
-    Polynomial q;
-    q.addTerm(1, 2);
-    q.addTerm(0, 1);
-    cout << p << endl;
-    cout << q << endl;
-    cout << p + q << endl;
-    cout << p * q << endl;
+
+int main (){
+    Polynomial a, b;
+
+    cout << "a = " << a << endl;
+    cout << "b = " << b << endl;
+    cout << "//-------------------------//" << endl;
+
+    for (int i = -2; i < 3; i++) {
+        a.addTerm(i, 1);
+        b.addTerm(i, -1);
+        cout << "a = " << a << endl;
+        cout << "b = " << b << endl;
+        cout << "a + b = " << a + b << endl;
+        cout << "a * b = " << a * b << endl;
+        cout << "//-------------------------//" << endl;
+    }
+
+
     return 0;
 }
