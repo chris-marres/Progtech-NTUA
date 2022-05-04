@@ -25,7 +25,7 @@ class Polynomial {
         friend Polynomial operator+ (const Polynomial &p, const Polynomial &q);
         friend Polynomial operator* (const Polynomial &p, const Polynomial &q);
 
-        friend ostream & operator << (ostream &out, const Polynomial &p);        
+        friend ostream & operator << (ostream &out, const Polynomial &p);     
 
 
     private:
@@ -91,6 +91,15 @@ void Polynomial::addTerm(int expon, int coeff) {
     }
     else{
         p_ptr->coefficient += coeff;
+        if (p_ptr->coefficient == 0) {
+            if (prev == NULL) {
+                head = p_ptr->next;
+            }
+            else{
+                prev->next = p_ptr->next;
+            }
+            delete p_ptr;
+        }
     }
 }
 
@@ -150,6 +159,7 @@ Polynomial operator* (const Polynomial &p, const Polynomial &q) {
 
 ostream & operator << (ostream &out, const Polynomial &p) {
     Polynomial::Term *p_ptr = p.head;
+
     if (p_ptr == NULL) {
         out << "0";
     }
@@ -189,32 +199,21 @@ ostream & operator << (ostream &out, const Polynomial &p) {
     return out;
 }
 
-
+/*
 int main (){
     Polynomial a, b;
 
-    cout << "a = " << a << endl;
-    cout << "b = " << b << endl;
-    cout << "//-------------------------//" << endl;
+    a.addTerm(2, 1);
+    a.addTerm(1, 1);
+    b.addTerm(2, -1);
+    b.addTerm(1, -1);
 
-    for (int i = -2; i < 3; i++) {
-        a.addTerm(i, 1);
-        b.addTerm(i, -1);
-        cout << "a = " << a << endl;
-        cout << "b = " << b << endl;
-        cout << "a + b = " << a + b << endl;
-        cout << "a * b = " << a * b << endl;
-        cout << "//-------------------------//" << endl;
-    }
+    cout << a << endl;
+    cout << b << endl;
 
-    cout << endl << "//-------------------------//" << endl << endl;
-
-    a = b;
-    cout << "a = b = " << a << endl;
-    
-    Polynomial c(b);
-    cout << "c = b = " << c << endl;
+    cout << a + b << endl;
 
 
     return 0;
 }
+*/
